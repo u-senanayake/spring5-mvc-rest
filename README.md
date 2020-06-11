@@ -1,2 +1,2 @@
-[![CircleCI](https://circleci.com/gh/u-senanayake/spring5-mvc-rest.svg?style=svg)](https://circleci.com/gh/u-senanayake/spring5-mvc-rest)
+[![CircleCI](https://app.circleci.com/pipelines/github/u-senanayake/spring5-mvc-rest.svg?style=svg)](https://app.circleci.com/pipelines/github/u-senanayake/spring5-mvc-rest)
 # Spring Framework 5 MVC Rest Application
