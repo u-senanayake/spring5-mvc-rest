@@ -1,5 +1,6 @@
 package guru.springfamework.controllers.v1;
 
+import com.fasterxml.jackson.databind.node.BaseJsonNode;
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,11 +15,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static guru.springfamework.controllers.v1.AbstractRestControllerTest.asJsonString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,7 +79,28 @@ class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRST_NAME)));
+    }
 
+    @Test
+    void createNewCustomer() throws Exception {
+        //given
+        CustomerDTO customer=new CustomerDTO();
+        customer.setFirstName("Udayanga");
+        customer.setLastName("Senanayake");
+
+        CustomerDTO returnDto=new CustomerDTO();
+        returnDto.setFirstName(customer.getFirstName());
+        returnDto.setLastName(customer.getLastName());
+        returnDto.setCustomerUrl("/api/v1/customers/1");
+
+        when(customerService.createNewCustomer(customer)).thenReturn(returnDto);
+
+//        mockMvc.perform(post("/api/v1/customers/")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(customer)))
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.firstname", equalTo("Fred")))
+//                .andExpect(jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
 
     }
 }
