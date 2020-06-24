@@ -19,10 +19,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -134,7 +133,7 @@ class CustomerControllerTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstName("Fred");
 
-        CustomerDTO returnDto= new CustomerDTO();
+        CustomerDTO returnDto = new CustomerDTO();
         returnDto.setFirstName(customerDTO.getFirstName());
         returnDto.setLastName("Flintstone");
         returnDto.setCustomerUrl("/api/v1/customers/1");
@@ -148,5 +147,13 @@ class CustomerControllerTest {
 //                .andExpect(jsonPath("$.firstname", equalTo("Fred")))
 //                .andExpect(jsonPath("$.lastname", equalTo("Flintstone")))
 //                .andExpect(jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
+    }
+
+    @Test
+    void deleteCustomer() throws Exception {
+        mockMvc.perform(delete("/api/v1/customers/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(customerService).deleteCustomerById(anyLong());
     }
 }
