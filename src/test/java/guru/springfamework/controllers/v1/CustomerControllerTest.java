@@ -59,6 +59,7 @@ class CustomerControllerTest {
         List<CustomerDTO> customers = Arrays.asList(customerDTO1, customerDTO2);
         when(customerService.getAllCustomers()).thenReturn(customers);
         mockMvc.perform(get("/api/v1/customers/")
+                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(2)));
@@ -75,6 +76,7 @@ class CustomerControllerTest {
         when(customerService.getCustomerById(anyLong())).thenReturn(customerDTO1);
 
         mockMvc.perform(get("/api/v1/customers/1")
+                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRST_NAME)));
@@ -119,6 +121,7 @@ class CustomerControllerTest {
 
         //when then
         mockMvc.perform(put("/api/v1/customers/1")
+                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
                 .andExpect(status().isOk())
